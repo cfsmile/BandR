@@ -1,0 +1,758 @@
+
+#+STARTUP: overview
+
+* Interface tweaks
+
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-startup-message t)
+(tool-bar-mode -1)
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;; Rebind C-x o to M-o, as it's such a common thing to do.
+(global-set-key (kbd "M-o") 'other-window)
+(global-set-key (kbd "<f5>") 'revert-buffer)
+#+END_SRC
+
+* try
+
+#+BEGIN_SRC emacs-lisp
+(use-package try
+  :ensure t)
+#+END_SRC
+
+* which key
+
+#+BEGIN_SRC emacs-lisp
+(use-package which-key
+  :ensure t
+  :config (which-key-mode))
+#+END_SRC
+
+* Org mode
+#+BEGIN_SRC emacs-lisp
+    (use-package org-bullets
+      :ensure t
+      :config
+      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+    ;; (Custom-set-variable
+    ;;  '(org-directory "~/.emacs.d/orgfiles")
+    ;;  '(org-default-notes-file (concat org-directory "/notes.org"))
+    ;;  '(org-export-html-postamble t)
+    ;;  '(org-hide-leading-stars t)
+    ;;  '(org-startup-folded (quote overview))
+    ;;  '(org-startup-indented t)
+    ;;  )
+
+    ;; (setq org-file-apps
+    ;; 	(append '(
+    ;; 		  ("\\.pdf\\'" . "evince %s")
+    ;; 		  ) org-file-apps ))
+
+    ;; (global-set-key "\C-ca" 'org-agenda)
+
+    ;; (use-package org-ac
+    ;;   :ensure t
+    ;;   :init
+    ;;   (progn
+    ;;     (require 'org-ac)
+    ;;     (org-ac/config-default)
+    ;;     ))
+
+    ;; (global-set-key (kdb "C-c c") 'org-capture)
+
+  ;;  (setq org-agenda-files (list "~/.emacs.d/sample/tmp.org"))
+#+END_SRC
+
+#+RESULTS:
+: t
+
+* Theme
+
+#+BEGIN_SRC emacs-lisp
+;; (load-theme 'light-blue t)
+(load-theme 'leuven t)
+;; (load-theme 'zenburn t)
+#+END_SRC
+
+* the rest
+
+#+BEGIN_SRC emacs-lisp
+(defalias 'list-buffers 'ibuffer)
+
+(use-package ace-window
+  :ensure t
+  :init
+  (progn
+    (global-set-key [remap other-window] 'ace-window)
+    (custom-set-faces
+     '(aw-leading-char-face
+       ((t (:inherit ace-jump-face-foreground :height 3.0)))))
+    ))
+
+(use-package swiper
+  :ensure try
+  :bind (("C-s" . swiper)
+         ("C-r" . swiper)
+         ("C-c C-r" . ivy-resume)
+         ("M-x" . counsel-M-x)
+         ("C-x C-f" . counsel-find-file))
+  :config
+  (progn
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-display-style 'fancy)
+    (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+    ))
+#+END_SRC
+
+* Councel ,ivy, and yanking(better kill ring manipulation recommendation by Irreal)
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy
+    :ensure t
+    :diminish (ivy-mode)
+    :bind (("C-x b" . ivy-switch-buffer))
+    :config
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-display-style 'fancy))
+
+  (use-package counsel
+    :ensure t
+    :bind
+    (("M-y" . counsel-yank-pop)
+    :map ivy-minibuffer-map
+    ("M-y" . ivy-next-line)))
+
+
+#+END_SRC
+
+#+RESULTS:
+: ivy-next-line
+
+* Reveal.js
+
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package ox-reveal
+  ;;   :ensure ox-reveal)
+
+  ;; (setq org-reveal-root "http://cdn.jsdeliver.net/reveal.js/3.0.0/")
+  ;; (setq org-reveal-mathjax t)
+#+END_SRC
+
+#+RESULTS:
+: t
+
+
+* Flycheck
+
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :ensure t
+    :init
+    (global-flycheck-mode t))
+
+#+END_SRC
+
+* Python
+
+#+BEGIN_SRC emacs-lisp
+  ;; jedi needs virtualenv to install jedi epc server. Without virtualenv, it is hardly using jedi.
+    ;; (use-package jedi
+    ;;   :ensure t
+    ;;   :init
+    ;;   (add-hook 'python-mode-hook 'jedi:setup)
+    ;;   (add-hook 'python-mode-hook 'jedi:ac-setup))
+
+  (use-package elpy
+    :ensure t
+    :config
+    (elpy-enable))
+#+END_SRC
+
+* Yasnippet
+
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    :ensure t
+    :init
+      (yas-global-mode 1))
+#+END_SRC
+
+* Undo tree
+#+BEGIN_SRC emacs-lisp
+  (use-package undo-tree
+    :ensure t
+    :init
+    (global-undo-tree-mode))
+
+#+END_SRC
+
+* Misc packages
+#+BEGIN_SRC emacs-lisp
+    (global-hl-line-mode t)  ;; highlight line
+
+    ;; mark the cursor with beacon light
+    (use-package beacon
+      :ensure t
+      :config
+      (beacon-mode 1)
+      (setq beacon-color "#666600"))
+      
+    ;; delete white spaces hungrily (as much as possible)
+    (use-package hungry-delete
+      :ensure t
+      :config
+      (global-hungry-delete-mode 1))
+
+    (setq save-interprogram-paste-before-kill t)
+
+    (global-auto-revert-mode 1)
+
+  ;;  (setq auto-revert-mode nil)
+
+  ;; (use-package aggressive-indent
+    ;;   :ensure t
+    ;;   :config
+    ;;   (global-agressive-indent-mode 1))
+
+    ;; Expand region increases the selected region by semantic units  
+#+END_SRC
+
+#+RESULTS:
+: t
+
+* iedit and narrow / widen dwim
+
+#+BEGIN_SRC emacs-lisp
+(use-package iedit
+    :ensure t)
+
+(use-package expand-region
+    :ensure t
+    :config
+    (global-set-key (kbd "C-=") 'er/expand-region))
+#+END_SRC
+
+* Load other files
+#+BEGIN_SRC emacs-lisp
+  ;; (defun load-if-exists (f)		
+  ;;   ""
+  ;;   (if (file-readable-p f)
+  ;;       (load-file f)))
+
+  ;; (load-if-exists "~/...el")
+
+  ;; (when (file-readable-p f) (load-file p))
+#+END_SRC
+
+* Web Mode
+#+BEGIN_SRC emacs-lisp
+  (use-package web-mode
+    :ensure t
+    :config
+    (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+    (setq web-mode-engines-alist
+	  '(("django"  .  "\\.html\\'")))
+    (setq web-mode-ac-sources-alist
+	  '(("css"  . (ac-sources-css-property))
+	    ("html"  . (ac-source-words-in-buffer ac-source-abbrev))))
+    (setq web-mode-enable-auto-closing t))
+#+END_SRC
+
+#+RESULTS:
+:
+
+* Stuff to refile as I do more screencasts
+#+BEGIN_SRC emacs-lisp
+  (setq user-full-name "Fred Chen"
+	user-mail-address "dlmucf@yahoo.com")
+
+  ;; (global-set-key (
+
+
+  ;; (use-package tex
+  ;;   :ensure auctex)
+
+  ;; ;; latex
+  ;; (defun tex-view ()
+  ;;   (interactive)
+  ;;   (tex-send-command "evince" (tex-append tex-print-file ".pdf")))
+
+#+END_SRC
+
+* Better shell
+
+#+BEGIN_SRC emacs-lisp
+  (use-package better-shell
+    :ensure t
+    :bind (("C-'" . better-shell-shell)
+	   ("C-;" . better-shell-remote-open)))
+#+END_SRC
+
+* Elfeed
+#+BEGIN_SRC emacs-lisp
+    (setq elfeed-db-directory "~/.emacs.d/orgfiles/elfeed")
+
+    (defun elfeed-mark-all-as-read ()
+	  (interactive)
+	  (mark-whole-buffer)
+	  (elfeed-search-untag-all-unread))
+
+
+    ;;functions to support syncing .elfeed between machines
+    ;;makes sure elfeed reads index from disk before launching
+    (defun bjm/elfeed-load-db-and-open ()
+      "Wrapper to load the elfeed db from disk before opening"
+      (interactive)
+      (elfeed-db-load)
+      (elfeed)
+      (elfeed-search-update--force))
+
+    ;;write to disk when quiting
+    (defun bjm/elfeed-save-db-and-bury ()
+      "Wrapper to save the elfeed db to disk before burying buffer"
+      (interactive)
+      (elfeed-db-save)
+      (quit-window))
+
+
+
+  ;;  (defalias 'elfeed-toggle-star
+  ;;    (elfeed-expose #'elfeed-search-toggle-all 'star))
+
+      (use-package elfeed
+	:ensure t
+	:bind (:map elfeed-search-mode-map
+		    ("q" . bjm/elfeed-save-db-and-bury)
+		    ("Q" . bjm/elfeed-save-db-and-bury)
+      ;;            ("j" . mz/make-and-run-elfeed-hydra)
+		    ("m" . elfeed-toggle-star)
+      ;;	      ("J" . mz/make-and-run-elfeed-hydra)
+		    ("M" . elfeed-toggle-star)
+	      )
+      )
+
+  ;;  (use-package elfeed-goodies
+  ;;    :ensure t
+  ;;    :config
+  ;;    (elfeed-goodies/setup))
+
+  ;;  (setq org-agenda-overriding-columns-format "%45ITEM %TAGS %PRIORITY %TODO %CLOSED %SCHEDULED")
+
+    (use-package elfeed-org
+      :ensure t
+      :config
+      (elfeed-org)
+      (setq rmh-elfeed-org-files (list "~/.emacs.d/orgfiles/elfeed.org")))
+
+#+END_SRC
+
+#+RESULTS:
+: t
+
+* Hydra
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package hydra
+  ;;   :ensure t)
+
+  ;; (defhydra hydra-zoom (global-map "<f2>")
+  ;;   "zoom"
+  ;;   ("g" text-scale-increase "in")
+  ;;   ("l" text-scale-decrease "out"))
+#+END_SRC
+
+* projectile
+#+BEGIN_SRC emacs-lisp
+    ;; projectile
+    (use-package projectile
+       :ensure t
+       :config
+       (setq projectile-completion-system 'ivy))
+
+    (projectile-mode +1)
+    (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
+    ;;   :config
+  ;; (setq projectile-completion-system 'ivy))
+
+    ;; (use-package counsel-projectile
+    ;;   :ensure t
+    ;;   :config
+    ;;   (counsel-projectile-on))
+
+#+END_SRC
+
+#+RESULTS:
+: projectile-command-map
+
+* IBuffer and Emmet mode
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (setq ibuffer-saved-filter-groups
+	(quote (("default"
+		 ("dired" (mode . dired-mode))
+		 ("org" (name . "^.*org$"))
+
+		 ("web" (or (mode . web-mode) (mode . js2-mode)))
+		 ("shell" (or (mode . eshell-mode) (mode . shell-mode)))
+		 ("mu4e" (name . "\*mu4e\*"))
+		 ("programming" (or
+				 (mode . python-mode)
+				 (mode . c++-mode)))
+		 ("emacs" (or
+			   (name . "^\\*scratch\\*$")
+			   (name . "^\\*Messages\\*$")))
+		 ))))
+  (add-hook 'ibuffer-mode-hook
+	    (lambda ()
+	      (ibuffer-auto-mode 1)
+	      (ibuffer-switch-to-saved-filter-groups "default")))
+
+  ;; don't show these
+  ;; (add-to-list 'ibuffer-never-show-predicates "zowie")
+  ;; Don't show filter groups if there are no buffers in that group
+  (setq ibuffer-show-empty-filter-groups nil)
+
+  ;; Don't ask for confirmation to delete marked buffers
+  ;; (setq ibuffer-expert t)
+
+  ;; Emmet mode for creating html easier
+  (use-package emmet-mode
+    :ensure t
+    :config
+    (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
+    (add-hook 'web-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
+    (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
+  )
+#+END_SRC
+
+#+RESULTS:
+: t
+
+* Hacking ace-window with elisp 
+#+BEGIN_SRC emacs-lisp
+  (defun myswap()
+    "Swap windows leave focus in original window.
+    Kind of hacking."
+    (interactive)
+    (ace-swap-window)
+    (aw-flip-window))
+
+#+END_SRC
+
+* My own key map
+#+BEGIN_SRC emacs-lisp
+  ;;; package --- summary
+  ;;; Commentary:
+  ;; set up my own map
+  ;;; code:
+  ;; (define-prefix-command 'z-map)
+  ;; (global-set-key (kbd "C-1") 'z-map)
+
+  ;; (define-key z-map (kbd "m") 'mu4e)
+  ;; (define-key z-map (kbd "e") 'bjm/elfeed-load-db-and-open)
+
+  ;; (define-key z-map (kbd "w") 'myswap)
+#+END_SRC
+
+#+RESULTS:
+
+* Treemacs
+#+BEGIN_SRC emacs-lisp
+  ;;   (use-package treemacs
+  ;;     :ensure t
+  ;;     :defer t
+  ;;     :init
+  ;;     (with-eval-after-load 'winum
+  ;;       (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+  ;; )
+      ;; :config
+      ;; (progn
+      ;;   (setq treemacs-collapse-dirs              (if (executable-find "python") 3 0)
+      ;; 	  treemacs-deferred-git-apply-delay   0.5
+      ;; 	  treemacs-display-in-side-window     t
+      ;; 	  treemacs-file-event-delay           5000
+      ;; 	  treemacs-file-follow-delay          0.2
+      ;; 	  treemacs-follow-after-init          t
+      ;; 	  treemacs-follow-recenter-distance   0.1
+      ;; 	  treemacs-goto-tag-strategy          'refetch-index
+      ;; 	  treemacs-indentation                2
+      ;; 	  treemacs-indentation-string         " "
+      ;; 	  treemacs-is-never-other-window      nil
+      ;; 	  treemacs-no-png-images              nil
+      ;; 	  treemacs-project-follow-cleanup     nil
+      ;; 	  treemacs-persist-file               (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
+      ;; 	  treemacs-recenter-after-file-follow nil
+      ;; 	  treemacs-recenter-after-tag-follow  nil
+      ;; 	  treemacs-show-hidden-files          t
+      ;; 	  treemacs-silent-filewatch           nil
+      ;; 	  treemacs-silent-refresh             nil
+      ;; 	  treemacs-sorting                    'alphabetic-desc
+      ;; 	  treemacs-space-between-root-nodes   t
+      ;; 	  treemacs-tag-follow-cleanup         t
+      ;; 	  treemacs-tag-follow-delay           1.5
+      ;; 	  treemacs-width                      35)
+
+      ;;   ;; The default width and height of the icons is 22 pixels. If you are
+      ;;   ;; using a Hi-DPI display, uncomment this to double the icon size.
+      ;;   ;;(treemacs-resize-icons 44)
+
+      ;;   (treemacs-follow-mode t)
+      ;;   (treemacs-filewatch-mode t)
+      ;;   (treemacs-fringe-indicator-mode t)
+      ;;   (pcase (cons (not (null (executable-find "git")))
+      ;; 		 (not (null (executable-find "python3"))))
+      ;;     (`(t . t)
+      ;;      (treemacs-git-mode 'extended))
+      ;;     (`(t . _)
+      ;;      (treemacs-git-mode 'simple))))
+      ;; :bind
+      ;; (:map global-map
+      ;; 	("M-0"       . treemacs-select-window)
+      ;; 	("C-x t 1"   . treemacs-delete-other-windows)
+      ;; 	("C-x t t"   . treemacs)
+      ;; 	("C-x t B"   . treemacs-bookmark)
+      ;; 	("C-x t C-t" . treemacs-find-file)
+      ;; 	("C-x t M-t" . treemacs-find-tag)))
+
+    ;; (use-package treemacs-evil
+    ;;   :after treemacs evil
+    ;;   :ensure t)
+
+    ;; (use-package treemacs-projectile
+    ;;   :after treemacs projectile
+    ;;   :ensure t)
+#+END_SRC
+
+
+* Dired+, pcre2el, and wgrep
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package dired+
+  ;; " This package might not exsit any more."
+  ;;   :ensure t
+  ;;   :config (require 'dired+))
+
+
+  ;; (use-package pcre2el
+  ;;   :ensure t
+  ;;   :config 
+  ;;   (pcre-mode)
+  ;;   )
+#+END_SRC
+
+* mu4e
+#+BEGIN_SRC emacs-lisp
+;;  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
+  ;; (use-package mu4e
+  ;;   :ensure t)
+
+  ;; (require 'mu4e)
+
+  ;; (require 'smtpmail)
+
+
+  ;; (setq
+  ;;  message-send-mail-function 'smtpmail-send-it
+  ;;  starttls-use-gnutls t
+  ;;  mu4e-sent-messages-behavior 'sent
+  ;;  mu4e-sent-folder "/home/fred/.emacs.d/MailDir/Sent"
+  ;;  mu4e-drafts-folder "/home/fred/.emacs.d/MailDir/Drafts"
+  ;;  user-mail-address "dlmucf@163.com"
+  ;;  user-full-name "Fred Chen"
+  ;;  smtpmail-default-smtp-server "smtp.163.com"
+  ;; ;; smtpmail-local-domain "hunter.cuny.edu"
+  ;;  smtpmail-smtp-user "dlmucf"
+  ;;  smtpmail-smtp-server "smtp.163.com"
+  ;;  smtpmail-stream-type 'starttls
+  ;;  smtpmail-smtp-service 994)
+
+  ;; (setq mu4e-maildir "~/.emacs.d/Maildir"
+  ;;       mu4e-trash-folder "~/.emacs.d/MailDir/Trash"
+  ;;       mu4e-refile-folder "~/.emacs.d/MailDir/Archive"
+  ;;       mu4e-get-mail-command "mbsync -a"
+  ;;       mu4e-update-interval 300 ;; second
+  ;;       mu4e-compose-signature-auto-include nil
+  ;;       mu4e-view-show-images t
+  ;;       mu4e-view-show-addresses t
+  ;;       mu4e-attachment-dir "~/.emacs.d/MailDir/Downloads"
+  ;;       mu4e-use-fancy-chars t
+  ;;       )
+
+
+
+
+
+  ;; ;;; Mail directory shortcuts
+  ;; ;; (setq mu4e-maildir-shortcuts
+  ;; ;;       '(
+  ;; ;;         ("/hunter/INBOX" . ?h)
+  ;; ;;         ("/hunter/Archive" . ?H)
+  ;; ;; 	("/hunter/Sent Items" .?s)
+  ;; ;; 	))
+
+  ;; ;;; Bookmarks
+  ;; (setq mu4e-bookmarks
+  ;;       `(
+  ;; 	("flag:unread AND NOT flag:trashed" "Unread messages" ?u)
+  ;; 	("flag:unread" "Unread messages" ?n)
+  ;; 	("date:today..now" "Today's messages" ?t)
+  ;; 	("date:7d..now" "Last 7 days" ?w)
+  ;; 	("mime:image/*" "Messages with images" ?p)
+  ;; 	(,(mapconcat 'identity
+  ;; 		     (mapcar
+  ;; 		      (lambda (maildir)
+  ;; 			(concat "maildir:" (car maildir)))
+  ;; 		      mu4e-maildir-shortcuts) " OR ")
+  ;; 	 "All inboxes" ?i)))
+
+
+  ;; (require 'org-mu4e)
+  ;; (setq org-mu4e-convert-to-html t)
+
+  ;; ;;(add-to-list 'load-path "/home/zamansky/Dropbox/opt/org-mode/contrib/lisp")
+  ;; ;;(require 'org-mime)
+
+  ;; ;; this seems to fix the babel file saving thing
+  ;; (defun org~mu4e-mime-replace-images (str current-file)
+  ;;   "Replace images in html files with cid links."
+  ;;   (let (html-images)
+  ;;     (cons
+  ;;      (replace-regexp-in-string ;; replace images in html
+  ;;       "src=\"\\([^\"]+\\)\""
+  ;;       (lambda (text)
+  ;; 	(format
+  ;; 	 "src=\"./:%s\""
+  ;; 	 (let* ((url (and (string-match "src=\"\\([^\"]+\\)\"" text)
+  ;; 			  (match-string 1 text)))
+  ;; 		(path (expand-file-name
+  ;; 		       url (file-name-directory current-file)))
+  ;; 		(ext (file-name-extension path))
+  ;; 		(id (replace-regexp-in-string "[\/\\\\]" "_" path)))
+  ;; 	   (add-to-list 'html-images
+  ;; 			(org~mu4e-mime-file
+  ;; 												 (concat "image/" ext) path id))
+  ;; 	   id)))
+  ;;       str)
+  ;;      html-images)))
+
+  ;; (add-to-list 'mu4e-view-actions
+  ;; 						 '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+
+
+
+
+  ;; (use-package mu4e-alert
+  ;; 	:ensure t)
+
+
+  ;; (mu4e-alert-set-default-style 'libnotify)
+  ;; (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
+  ;; (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
+
+
+
+
+  ;; ;;need this for hash access
+  ;; (require 'subr-x)
+
+
+  ;; ;; we seem to need this to fix the org-store-link issue
+  ;; (org-link-set-parameters "mu4e" :follow #'org-mu4e-open :store 
+  ;; #'org-mu4e-store-link)
+
+
+  ;; ;; contact tweaks
+
+  ;; ;;(setq mu4e-compose-complete-only-after t)
+  ;; ;;(setq mu4e-compose-complete-only-personal t)
+#+END_SRC
+* magit
+#+BEGIN_SRC emacs-lisp
+
+#+END_SRC
+
+#+RESULTS:
+
+* Pdf tools
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package pdf-tools
+  ;;   :ensure t
+  ;;   :config
+  ;;   (pdf-tools-install))
+
+
+  ;; (use-package org-pdfview
+  ;;   :ensure t))
+
+#+END_SRC
+
+#+RESULTS:
+
+* Autocomplete
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package auto-complete
+  ;;   :ensure t
+  ;;   :init
+  ;;   (progn
+  ;;     (ac-config-default)
+  ;;     (global-auto-complete-mode t)
+  ;;     ))
+
+
+  ;; (use-package org-ac
+  ;;   :ensure t
+  ;;   :init(progn
+  ;; 	 (require 'org-ac)
+  ;; 	 (org-ac/config-default)
+  ;; 	 ))
+
+#+END_SRC
+
+* company
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :ensure t
+    :config
+    (setq company-idle-delay 0)
+    (setq company-minimum-prefix-length 3)
+
+    (global-company-mode t))
+
+  (use-package company-irony
+    :ensure t
+    :config
+    (add-to-list 'company-backends 'company-irony))
+
+  (use-package irony
+    :ensure t
+    :config
+    (add-hook 'c-mode-hook 'irony-mode)
+    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+#+END_SRC
+
+#+RESULTS:
+: t
+
+
+* dashboard
+#+BEGIN_SRC emacs-lisp
+;;  (require 'dashboard)
+;;    (dashboard-setup-startup-hook)
+  ;; Or if you use use-package
+  (use-package dashboard
+    :ensure t
+    :config
+    (dashboard-setup-startup-hook))
+
+  (setq dashboard-items '((recents  . 5)
+			  (bookmarks . 5)
+			  (projects . 5)
+			  (agenda . 5)
+			  (registers . 5)))
+#+END_SRC
+
+#+RESULTS:
+: ((recents . 5) (bookmarks . 5) (projects . 5) (agenda . 5) (registers . 5))
+
