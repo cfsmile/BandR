@@ -1,3 +1,5 @@
+;; Copy from: http://ergoemacs.org/emacs/emacs_abbrev_mode_tutorial.html
+
 ;; -*- coding: utf-8; lexical-binding: t; -*-
 ;; sample use of abbrev
 
@@ -77,8 +79,8 @@
 
     ;;
     ;; academic paper part
-    ("acaintro1" "A central problem in social science is that of accounting for the function of some kind of social system. Yet in most social research, observations are not made on the system as a whole, but on some part of it. In fact, the natural unit of observation is the individual person…  This has led to a widening gap between theory and research")
-    ("acaintro2" "The major problem for explanations of system behavior based on actions and orientations at a level below that of the system [in this case, on individual-level actions] is that of moving from the lower level to the system level. This has been called the micro-to-macro problem, and it is pervasive throughout the social sciences.")
+    ("acaintro1" "A central problem in SCIENCE RESEARCH is that of accounting for the function of some kind of system. Yet in most ...")
+    ("acaintro2" "The major problem for explanations of system behavior based on actions and orientations at a level below that of ...")
     ))
 
 ;; define abbrev for specific major mode
